@@ -28,7 +28,7 @@ export default {
             todoItem:{
               input:"",
               deadLine:"",
-              isPast:false,
+              isPast:"",
               id:"",
               class:"aaa"
             },
@@ -46,7 +46,7 @@ export default {
             this.todoItem.deadLine = this.todoItem.deadLine.replace("T", " ");
             // console.log(this.deadLine)
             this.todoItem.isPast = Date.now() > new Date(this.todoItem.deadLine).getTime();
-            //  console.log(this.isPast)
+            //  console.log(this.todoItem.isPast)
             this.todoItem.id=Date.now()
             // console.log(this.id)
             if(this.todoItem.input.trim() ==="" || this.todoItem.input === null){
@@ -56,11 +56,12 @@ export default {
                 alert("geçerli bir tarih giriniz")
             }
             else{
-             this.todoList.push({...this.todoItem}
+             this.todoList.push({...this.todoItem},
+             
              
                 
             )}
-
+            localStorage.setItem("todoList", JSON.stringify([...this.todoList]))
              this.input=""
        
             
@@ -76,14 +77,16 @@ export default {
     beforeMount(){
       
    
-        this.todoList= JSON.parse(localStorage.getItem("todoList"));
-       (this.todoList).map((item) => new Date(item.deadLine).getTime() > Date.now()  &&  (item.class="line") )
+        this.todoList= JSON.parse(localStorage.getItem("todoList"))  || '[]';
+
+        this.todoList.map((item) => new Date(item.deadLine).getTime() < Date.now()  &&  (item.class="line") );
+         localStorage.setItem("todoList", JSON.stringify([...this.todoList]));
 
       
     },
-    mounted(){
-       this.todoList= JSON.parse(localStorage.getItem("todoList"))
-    },
+    // mounted(){
+    //    this.todoList= JSON.parse(localStorage.getItem("todoList"))
+    // },
     updated(){
         localStorage.setItem("todoList", JSON.stringify([...this.todoList]));
     }
