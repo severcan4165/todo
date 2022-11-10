@@ -67,7 +67,12 @@ export default {
             
         },
         deleteItem:function(event){
-        event.target.parentElement.remove()
+            // console.log(event.target.previousElementSibling.id)
+            this.todoList= JSON.parse(localStorage.getItem("todoList"))  || '[]';
+            this.todoList.map((item) => item.id == event.target.previousElementSibling.id && this.todoList.splice(this.todoList.indexOf(item),1))
+            
+        // event.target.parentElement.remove() this.todoList.splice(this.todoList.indexOf(item),1)
+        localStorage.setItem("todoList", JSON.stringify([...this.todoList]));
         },
         
         
